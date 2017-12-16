@@ -16,6 +16,13 @@ app.get('/station', (req, res) => {
 
 });
 
+app.get('/schedule', (req, res) => {
+  res.json({ 
+    station: 'Bathurst',
+    next_bus: 5
+  });
+});
+
 
 app.listen(PORT, () => {
   console.log('Listening on port' + PORT);
