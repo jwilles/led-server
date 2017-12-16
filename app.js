@@ -7,12 +7,13 @@ app.get('/', (req, res) => {
   res.send('hello world');
 });
 
-app.get('/station'), (req, res) => {
+app.get('/station', (req, res) => {
   res.json({ 
     station: 'Bathurst',
     lat: 0,
     lon: 0
-  })
+  });
+
 });
 
 
