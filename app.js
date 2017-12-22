@@ -3,7 +3,13 @@ const app = express();
 
 const PORT = process.env.PORT || 3000
 
-const stations = {
+const stations_list = [
+	'Bathurst',
+	'Spadina',
+	'Lansdowne'
+]
+
+const schedule = {
 	Bathurst: 5, 
 	Spadina: 15,
 	Lansdowne: 10
@@ -19,11 +25,9 @@ app.get('/', (req, res) => {
   res.send('hello world');
 });
 
-app.get('/station', (req, res) => {
+app.get('/stations', (req, res) => {
   res.json({ 
-    station: 'Bathurst',
-    lat: 0,
-    lon: 0
+    stations: stations_list
   });
 
 });
@@ -34,7 +38,7 @@ app.get('/schedule', (req, res) => {
 
   res.json({
     station: req_station,
-    next_bus: stations[req_station]
+    next_bus: schedule[req_station]
   });
 });
 
