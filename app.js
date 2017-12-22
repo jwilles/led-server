@@ -3,6 +3,12 @@ const app = express();
 
 const PORT = process.env.PORT || 3000
 
+const stations = {
+	Bathurst: 5, 
+	Spadina: 15,
+	Lansdowne: 10
+};
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -23,9 +29,12 @@ app.get('/station', (req, res) => {
 });
 
 app.get('/schedule', (req, res) => {
-  res.json({ 
-    station: 'Bathurst',
-    next_bus: 5
+
+  var req_station = req.query.station
+
+  res.json({
+    station: req_station,
+    next_bus: stations[req_station]
   });
 });
 
