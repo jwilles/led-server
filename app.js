@@ -1,4 +1,7 @@
 const express = require('express');
+const request = require('request');
+const xml2js = require('xml2js');
+const xmlParser = xml2js.parseString;
 const app = express();
 
 const PORT = process.env.PORT || 3000
@@ -15,6 +18,8 @@ const schedule = {
 	Lansdowne: 10
 };
 
+const ttc_endpoint = 'http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc';
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -26,10 +31,21 @@ app.get('/', (req, res) => {
 });
 
 app.get('/stations', (req, res) => {
-  res.json({ 
-    stations: stations_list
-  });
+  res.json({ stations: stations_list});
+});
 
+app.get('/routes', (req, res) => {
+  
+  routes = {}
+  
+  request(ttc_endpoint, function(err, api_res, body) {
+    xmlParser(body, function(err, result) {
+      result.body.route.forEach(function(element) {
+        routes[element['$'].tag] = element['$'].title
+      });
+      res.json({ routes: routes });
+    });
+  });
 });
 
 app.get('/schedule', (req, res) => {
