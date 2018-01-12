@@ -52,6 +52,15 @@ app.get('/schedule', (req, res) => {
 
   var req_station = req.query.station
 
+  request(ttc_endpoint, function(err, api_res, body) {
+    xmlParser(body, function(err, result) {
+
+      });
+      res.json({ routes: routes });
+    });
+  });
+
+
   res.json({
     station: req_station,
     next_bus: schedule[req_station]
