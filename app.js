@@ -19,6 +19,7 @@ const schedule = {
 };
 
 const ttc_endpoint = 'http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc';
+const ttc_stop_Endpoint = 'http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc';
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
