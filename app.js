@@ -6,20 +6,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000
 
-const stations_list = [
-	'Bathurst',
-	'Spadina',
-	'Lansdowne'
-]
-
-const schedule = {
-	Bathurst: 5, 
-	Spadina: 15,
-	Lansdowne: 10
-};
-
-const ttc_endpoint = 'http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=ttc';
-const ttc_stop_Endpoint = 'http://webservices.nextbus.com/service/publicXMLFeed?command=routeConfig&a=ttc';
+const ttc_base = 'http://webservices.nextbus.com/service/publicXMLFeed?';
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -31,15 +18,12 @@ app.get('/', (req, res) => {
   res.send('hello world');
 });
 
-app.get('/stations', (req, res) => {
-  res.json({ stations: stations_list});
-});
-
 app.get('/routes', (req, res) => {
   
-  routes = {}
+  let routes = {}
+  const routes_endpoint = ttc_base + "command=routeList&a=ttc";
   
-  request(ttc_endpoint, function(err, api_res, body) {
+  request(routes_endpoint, function(err, api_res, body) {
     xmlParser(body, function(err, result) {
       result.body.route.forEach(function(element) {
         routes[element['$'].tag] = element['$'].title
@@ -49,22 +33,20 @@ app.get('/routes', (req, res) => {
   });
 });
 
-app.get('/schedule', (req, res) => {
+app.get('/stops', (req, res) => {
 
-  var req_station = req.query.station
+  let req_route = req.query.route
+  const stop_endpoint = ttc_base + "command=routeConfig&a=ttc&r=" + req_route;
 
-  request(ttc_endpoint, function(err, api_res, body) {
+  let stops = {};
+
+  request(stop_endpoint, function(err, api_res, body) {
     xmlParser(body, function(err, result) {
-
+      result.body.route[0].stop.forEach(function(element){
+        stops[element['$'].tag] = { title: element['$'].title, stopId: element['$'].stopId };
       });
-      res.json({ routes: routes });
+      res.json(stops);
     });
-  });
-
-
-  res.json({
-    station: req_station,
-    next_bus: schedule[req_station]
   });
 });
 
