@@ -50,6 +50,10 @@ app.get('/stops', (req, res) => {
   });
 });
 
+app.get('/predict', (req, res) => {
+ res.json(req.query.stop); 
+});
+
 
 app.listen(PORT, () => {
   console.log('Listening on port' + PORT);
