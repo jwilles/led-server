@@ -51,12 +51,19 @@ app.get('/stops', (req, res) => {
 });
 
 app.get('/predict', (req, res) => {
- res.json(req.query.stop); 
+
+  const prediction_endpoint = ttc_base + "command=predictions&a=ttc&stopId=" + req.query.stop
+
+  request(prediction_endpoint, function(err, api_res, body) {
+    xmlParser(body, function(err, result) {
+      res.json(result);
+    });
+  });
 });
 
 
 app.listen(PORT, () => {
-  console.log('Listening on port' + PORT);
+  console.log('Listening on port: ' + PORT);
 });
 
 
