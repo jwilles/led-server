@@ -67,7 +67,8 @@ app.get('/predict', (req, res) => {
       predict_endpoints.push(prediction_endpoint + stop);  
     });
   } else {
-    predict_endpoints = prediction_endpoint + stops
+    predict_endpoints = prediction_endpoint + stops;
+    stops = [stops];
 
   }
   console.log(predict_endpoints);
