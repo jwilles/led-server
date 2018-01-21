@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('request');
+const request-promise = require('request-promise-native');
 const xml2js = require('xml2js');
 const xmlParser = xml2js.parseString;
 const app = express();
@@ -55,13 +56,19 @@ app.get('/stops', (req, res) => {
 
 app.get('/predict', (req, res) => {
 
-  const prediction_endpoint = ttc_base + "command=predictions&a=ttc&stopId=" + req.query.stop
+  const stops = req.query.stops
 
-  request(prediction_endpoint, function(err, api_res, body) {
-    xmlParser(body, function(err, result) {
-      res.json(result);
-    });
-  });
+
+  const prediction_endpoint = ttc_base + "command=predictions&a=ttc&stopId=" + stops[0];
+ 
+  res.send(stops); 
+  
+
+//  request(prediction_endpoint, function(err, api_res, body) {
+//    xmlParser(body, function(err, result) {
+//      res.json(result);
+//    });
+//  });
 });
 
 
