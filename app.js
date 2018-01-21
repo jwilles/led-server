@@ -60,8 +60,17 @@ app.get('/predict', (req, res) => {
   const stops = req.query.stops
   const prediction_endpoint = ttc_base + "command=predictions&a=ttc&stopId=";
 
-  stops.forEach((stop) => {
-  });
+  predict_endpoints = [];
+
+  if (stops.constructor === Array) {
+    stops.forEach((stop) => {
+      predict_endpoints.push(prediction_endpoint + stop);  
+    });
+  } else {
+    predict_endpoints = prediction_endpoint + stops
+
+  }
+  console.log(predict_endpoints);
  
   res.json(stops); 
 
