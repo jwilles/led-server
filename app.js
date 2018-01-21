@@ -25,6 +25,9 @@ app.get('/routes', (req, res) => {
   
   request(routes_endpoint, function(err, api_res, body) {
     xmlParser(body, function(err, result) {
+      if (err) {
+	return res.send(err);
+      }
       result.body.route.forEach(function(element) {
         routes[element['$'].tag] = element['$'].title
       });
