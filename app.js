@@ -1,6 +1,6 @@
 const express = require('express');
 const request = require('request');
-const request-promise = require('request-promise-native');
+const requestPromise = require('request-promise-native');
 const xml2js = require('xml2js');
 const xmlParser = xml2js.parseString;
 const app = express();
