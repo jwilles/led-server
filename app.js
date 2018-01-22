@@ -56,8 +56,7 @@ app.get('/stops', (req, res) => {
 
 app.get('/predict', (req, res) => {
 
-  console.log(req.query);
-  const stops = req.query.stops
+  let stops = req.query.stops
   const prediction_endpoint = ttc_base + "command=predictions&a=ttc&stopId=";
 
   predict_endpoints = [];
@@ -67,22 +66,31 @@ app.get('/predict', (req, res) => {
       predict_endpoints.push(prediction_endpoint + stop);  
     });
   } else {
-    predict_endpoints = prediction_endpoint + stops;
+    predict_endpoints.push(prediction_endpoint + stops);
     stops = [stops];
-
   }
-  console.log(predict_endpoints);
+
+  let requestArray = [];
+
+  predict_endpoints.forEach((endpoint) => {
+    requestArray.push(requestPromise(endpoint));
+  });
  
-  res.json(stops); 
+  Promise.all(requestArray)
+    .then((results) => {
+      nextArrivals = [];
+      results.forEach((stop) => {
+        xmlParser(stop, function(err, result) {
+          let nextVehicle = {
+		direction: result.body.predictions[0].direction[0]['$'].title,
+                eta: result.body.predictions[0].direction[0].prediction[0]['$'].minutes
 
-
-  
-
-//  request(prediction_endpoint, function(err, api_res, body) {
-//    xmlParser(body, function(err, result) {
-//      res.json(result);
-//    });
-//  });
+	  } 
+          nextArrivals.push(nextVehicle);
+        });
+      });
+      res.json(nextArrivals);
+    });
 });
 
 
