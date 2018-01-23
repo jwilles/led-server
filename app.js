@@ -84,7 +84,6 @@ app.get('/predict', (req, res) => {
           let nextVehicle = {
 		direction: result.body.predictions[0].direction[0]['$'].title,
                 eta: result.body.predictions[0].direction[0].prediction[0]['$'].minutes
-
 	  } 
           nextArrivals.push(nextVehicle);
         });
