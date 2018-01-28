@@ -10,6 +10,7 @@ router
   .get('/hello', controllers.hello)
   .get('/routes', controllers.getRoutes)
   .get('/stops', controllers.getStops)
-  .get('/predict', controllers.getPrediction);
+  .get('/predict', controllers.getPrediction)
+  .get('/sync', controllers.syncDevice);
   
 module.exports = router;
