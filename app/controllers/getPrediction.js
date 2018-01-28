@@ -40,6 +40,9 @@ getPrediction =  (req, res) => {
         });
       });
       res.json(nextArrivals);
+    })
+    .catch((err) => {
+	console.log(err);
     });
 };
 
