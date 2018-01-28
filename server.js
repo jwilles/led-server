@@ -5,6 +5,8 @@ const xml2js = require('xml2js');
 const xmlParser = xml2js.parseString;
 const app = express();
 
+const routes = require('./app/routes');
+
 const PORT = process.env.PORT || 3000
 
 const ttc_base = 'http://webservices.nextbus.com/service/publicXMLFeed?';
@@ -15,9 +17,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.send('hello');
-});
+app.use('/', routes);
 
 app.get('/routes', (req, res) => {
   
