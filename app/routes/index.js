@@ -6,6 +6,7 @@ const controllers = require('../controllers')
 router
   .get('/hello', controllers.hello)
   .get('/routes', controllers.getRoutes)
-  .get('/stops', controllers.getStops);
+  .get('/stops', controllers.getStops)
+  .get('/predict', controllers.getPrediction);
   
 module.exports = router;
