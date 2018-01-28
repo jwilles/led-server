@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const controllers = require('../controllers')
+const middleware = require('../middleware');
+const controllers = require('../controllers');
+
+router.use(middleware.addCorsHeader);
 
 router
   .get('/hello', controllers.hello)
