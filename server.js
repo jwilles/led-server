@@ -19,23 +19,6 @@ app.use(function(req, res, next) {
 
 app.use('/', routes);
 
-app.get('/stops', (req, res) => {
-
-  let req_route = req.query.route
-  const stop_endpoint = ttc_base + "command=routeConfig&a=ttc&r=" + req_route;
-
-  let stops = {};
-
-  request(stop_endpoint, function(err, api_res, body) {
-    xmlParser(body, function(err, result) {
-      result.body.route[0].stop.forEach(function(element){
-        stops[element['$'].tag] = { title: element['$'].title, stopId: element['$'].stopId };
-      });
-      res.json(stops);
-    });
-  });
-});
-
 app.get('/predict', (req, res) => {
 
   let stops = req.query.stops
